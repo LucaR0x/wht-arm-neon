@@ -1,9 +1,15 @@
+#include <filesystem>
+#include <iomanip>
+#include <ctime>
+#include <sstream>
 #include <iostream>
 #include <vector>
 #include <random>
 #include <chrono>
 #include <fstream>
 #include <cmath>
+#include "wht_naive.hpp"
+#include "wht_neon.hpp"
 
 // Dichiarazioni delle due implementazioni
 void wht_naive(std::vector<float>& data);
@@ -22,8 +28,24 @@ void print_vector(const std::vector<float>& data) {
 }
 
 int main() {
-    std::ofstream out("benchmark_results.csv");
+
+    // Set file per salvataggio risultati benchmark
+    auto now = std::chrono::system_clock::now();
+    auto now_time_t = std::chrono::system_clock::to_time_t(now);
+    std::tm tm_now;
+    #if defined(_WIN32) || defined(_WIN64)
+        localtime_s(&tm_now, &now_time_t);
+    #else
+        localtime_r(&now_time_t, &tm_now);
+    #endif
+    std::ostringstream oss;
+    oss << "benchmark/results/results_"
+        << std::put_time(&tm_now, "%Y-%m-%d_%H%M") << ".csv";
+    std::string filename = oss.str();
+
+    std::ofstream out(filename);
     out << "N,Tempo Naive(us),Tempo Neon(us),Prova" << std::endl;
+    std::cout << "Risultati benchmark salvati su: " << filename << std::endl;
 
     std::random_device rd;
     std::mt19937 gen(rd());

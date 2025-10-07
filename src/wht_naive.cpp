@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "wht_naive.hpp"
 
 // Implementazione FWHT iterativa
 void wht_naive(std::vector<float>& data) {

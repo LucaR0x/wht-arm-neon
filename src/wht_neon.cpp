@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <arm_neon.h>
+#include "wht_neon.hpp"
 
 
 // Implementazione FWHT iterativa con istruzioni NEON
