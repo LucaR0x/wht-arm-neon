@@ -47,6 +47,8 @@ int main() {
     out << "N,Tempo Naive(us),Tempo Neon(us),Prova" << std::endl;
     std::cout << "Risultati benchmark salvati su: " << filename << std::endl;
 
+    // generatore random per creazione vettore test
+
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<float> dist(-1.0f, 1.0f);
@@ -92,10 +94,10 @@ int main() {
             }
             double avg_neon = total_neon / reps;
 
-            // Scrivi nel CSV
+            // scrive nel CSV
             out << N << "," << avg_naive << "," << avg_neon << "," << (t+1) << std::endl;
 
-            // Stampa console (opzionale, per monitoraggio)
+            // stampa console
             std::cout << "N=" << N
                       << " | Prova " << (t+1)
                       << " | Naive=" << avg_naive << " us"
