@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <arm_neon.h>
+#include <random>
 #include "wht_neon.hpp"
 
 
@@ -10,8 +11,6 @@ void wht_neon(std::vector<float>& data) {
     for (int len = 1; len < n; len *= 2) {
         for (int i = 0; i < n; i += 2 * len) {
             int j = 0;
-
-            // Somme e sottrazioni in blocchi da 4 (float32x4_t)
             for (; j + 4 <= len; j += 4) {
 
                 // Load dei 4 valori a 32 bit consecutivi nei due registri (u e v) a 128 bit

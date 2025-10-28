@@ -4,6 +4,6 @@
 #include <vector>
 
 // Implementazione della Fast Walsh-Hadamard Transform (versione naive)
-void fwht_naive(std::vector<float>& data);
+void wht_naive(std::vector<float>& data);
 
 #endif

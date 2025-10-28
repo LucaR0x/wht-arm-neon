@@ -1,5 +1,5 @@
 CXX = clang++
-CXXFLAGS = -std=c++17
+CXXFLAGS = -std=c++17 -O3 -march=native
 
 SRC_DIR = src
 BENCH_DIR = benchmark

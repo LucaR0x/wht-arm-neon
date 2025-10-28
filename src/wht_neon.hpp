@@ -4,6 +4,6 @@
 #include <vector>
 
 // Implementazione FWHT con istruzioni NEON
-void fwht_neon(std::vector<float>& data);
+void wht_neon(std::vector<float>& data);
 
 #endif

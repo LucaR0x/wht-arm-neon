@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <random>
 #include "wht_naive.hpp"
-
 // Implementazione FWHT iterativa
 void wht_naive(std::vector<float>& data) {
     int n = data.size();
@@ -16,3 +16,4 @@ void wht_naive(std::vector<float>& data) {
         }
     }
 }
+

@@ -10,10 +10,12 @@
 #include <cmath>
 #include "wht_naive.hpp"
 #include "wht_neon.hpp"
+#include "wht_neon_opt.hpp"
 
 // Dichiarazioni delle due implementazioni
 void wht_naive(std::vector<float>& data);
 void wht_neon(std::vector<float>& data);
+void wht_neon_opt(std::vector<float>& data);
 
 
 
@@ -30,6 +32,7 @@ void print_vector(const std::vector<float>& data) {
 int main() {
 
     // Set file per salvataggio risultati benchmark
+
     auto now = std::chrono::system_clock::now();
     auto now_time_t = std::chrono::system_clock::to_time_t(now);
     std::tm tm_now;
@@ -44,7 +47,7 @@ int main() {
     std::string filename = oss.str();
 
     std::ofstream out(filename);
-    out << "N,Tempo Naive(us),Tempo Neon(us),Prova" << std::endl;
+    out << "N,Tempo Naive (ns),Tempo Neon (ns), Prova" << std::endl;
     std::cout << "Risultati benchmark salvati su: " << filename << std::endl;
 
     // generatore random per creazione vettore test
@@ -56,15 +59,15 @@ int main() {
     int reps = 100;   // ripetizioni per la media
     int trials = 10;  // numero di prove per ogni N
 
-    for (int exp = 2; exp <= 20 ; exp++) {
+    for (int exp =1; exp <= 20; exp++) {
         int N = 1 << exp; // potenze di 2
 
         for (int t = 0; t < trials; t++) {
             // input base
             std::vector<float> base(N);
             for (auto &x : base) x = dist(gen);
-            /*std::cout << "vettore di partenza\n";
-            print_vector(base);*/
+            //std::cout << "vettore di partenza\n";
+            //print_vector(base);
 
 
             // ---- Test Naive ----
@@ -74,9 +77,9 @@ int main() {
                 auto start = std::chrono::high_resolution_clock::now();
                 wht_naive(data);
                 auto end = std::chrono::high_resolution_clock::now();
-                /*std::cout << "vettore trasformato naive\n";
-                print_vector(data);*/
-                total_naive += std::chrono::duration<double, std::micro>(end - start).count();
+                //std::cout << "vettore trasformato naive\n";
+                //print_vector(data);
+                total_naive += std::chrono::duration<double, std::nano>(end - start).count();
             }
             
             double avg_naive = total_naive / reps;
@@ -88,9 +91,9 @@ int main() {
                 auto start = std::chrono::high_resolution_clock::now();
                 wht_neon(data);
                 auto end = std::chrono::high_resolution_clock::now();
-                /*std::cout << "vettore trsformato neon\n";
-                print_vector(data);*/
-                total_neon += std::chrono::duration<double, std::micro>(end - start).count();
+                //std::cout << "vettore trsformato neon\n";
+                //print_vector(data);
+                total_neon += std::chrono::duration<double, std::nano>(end - start).count();
             }
             double avg_neon = total_neon / reps;
 
@@ -100,11 +103,10 @@ int main() {
             // stampa console
             std::cout << "N=" << N
                       << " | Prova " << (t+1)
-                      << " | Naive=" << avg_naive << " us"
-                      << " | NEON=" << avg_neon << " us" << std::endl;
+                      << " | Naive=" << avg_naive << " ns"
+                      << " | NEON=" << avg_neon << " ns" << std::endl;
         }
     }
-
     out.close();
     return 0;
 }
